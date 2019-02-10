@@ -1,65 +1,62 @@
-import BootableInterface from '@/interfaces/BootableInterface';
-import GameLoop from '@/game/GameLoop';
-import GameLoopInterface from '@/interfaces/GameLoopInterface';
-import { isGameLoopInterface } from '@/guards/TypeGuards';
+import GameBase from '@/game/GameBase';
 import LauncherConfigInterface from '@/interfaces/LauncherConfigInterface';
-import MediatorInterface from '@/interfaces/MediatorInterface';
-import MediatorColleagueBase from '@/common/MediatorColleagueBase';
-import MediatorColleagueInterface from '@/interfaces/MediatorColleagueInterface';
-import MediatorMessageInterface from '@/interfaces/MediatorMessageInterface';
+import Scene from '@/scene/Scene';
+import TextAlign from '@/common/flags/TextAlign';
+import TextboxEntity from '@/entity/TextboxEntity';
+import TextEntity from '@/entity/TextEntity';
+import Vector from '@/common/math/Vector';
 
-export default class Game implements MediatorInterface {
-    private config: LauncherConfigInterface;
-    private systems: Array<BootableInterface & MediatorColleagueInterface>;
+export default class Game extends GameBase {
+    public boot(config: LauncherConfigInterface): void {
+        console.log('[DE: Game] Starting up...');
 
-    constructor() {
-        this.config = null;
-        this.systems = [];
-    }
+        const menuScene = new Scene();
 
-    public bootSystems(): void {
-        if (!this.config) {
-            throw new Error(`Cannot boot game systems if config is not set.`);
-        }
+        // menuScene.addEntity(
+        //     new TextEntity(`продолжать`, new Vector(400, 200))
+        // );
 
-        this.systems.forEach(system => {
-            system.boot(this.config);
+        // menuScene.addEntity(
+        //     new TextEntity('новая игра', new Vector(400, 230))
+        // );
+
+        // menuScene.addEntity(
+        //     new TextEntity('выбрать главу', new Vector(400, 260))
+        // );
+
+        // menuScene.addEntity(
+        //     new TextEntity('лучшие результаты', new Vector(400, 290))
+        // );
+
+        menuScene.addEntity(
+            new TextEntity('папа', new Vector(400, 320)).setStyle({textAlign:TextAlign.CENTER})
+        );
+
+        menuScene.addEntity(
+            new TextboxEntity().addTextEntity([
+                (new TextEntity(`
+                    Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym. Spopularyzował się w latach 60. XX w. wraz z publikacją arkuszy Letrasetu, zawierających fragmenty Lorem Ipsum, a ostatnio z zawierającym różne wersje Lorem Ipsum oprogramowaniem przeznaczonym do realizacji druków na komputerach osobistych, jak Aldus PageMaker
+                `)).setStyle({
+                    textAlign: TextAlign.CENTER
+                }),
+                (new TextEntity(`
+                    Zażółć gęślą jaźń
+                `)).setStyle({
+                    fontSize: '10px',
+                    textAlign: TextAlign.CENTER
+                })
+            ])
+        );
+
+        // this.messageCarrier.send('addScene', menuScene);
+        this.notifyMediator({
+            recipient: 'SceneManager',
+            type: 'addScene',
+            params: [
+                menuScene
+            ]
         });
-    }
 
-    public getGameLoop(): any {
-        // @TODO: come up with better idea on interface check
-        // @TODO: allow only one instance of GameLoopInterface in systems array
-        const gameLoopSystems = this.systems.filter(system => {
-            return isGameLoopInterface(system);
-        })
-
-        return gameLoopSystems.length === 1 ? gameLoopSystems[0] : null;
-    }
-
-    public getGameSystems(): Array<BootableInterface & MediatorColleagueInterface> {
-        return this.systems;
-    }
-
-    public registerSystem(system: BootableInterface & MediatorColleagueInterface): void {
-        this.systems.push(system); 
-    }
-
-    public setConfig(config: LauncherConfigInterface): void {
-        this.config = config;
-    }
-
-    public shutdownSystems(): void {
-        this.systems.forEach(system => {
-            system.shutdown();
-        })
-    }
-
-    public store(mediatorMessage: MediatorMessageInterface, sender: MediatorColleagueInterface): void {
-        this.systems.forEach(system => {
-            if (system !== sender) {
-                system.retriveMediatorMessage(mediatorMessage, sender);
-            }
-        });
+        console.log('[DE: Game] Up & running!');
     }
 };
