@@ -1,4 +1,5 @@
 export default interface MediatorMessageInterface {
-    type: string;
-    params: any;
+    type?: string;
+    recipient?: string,
+    params?: any;
 };

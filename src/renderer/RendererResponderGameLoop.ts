@@ -11,10 +11,10 @@ export default class RendererResponderGameLoop implements ResponderInterface {
 
     public resolveMessage (mediatorMessage: MediatorMessageInterface) {
         if (mediatorMessage.type === 'onDraw') {
-            this.renderer.onDraw(mediatorMessage.params.elapsedTime); // MessageGameLoopOnDraw
+            this.renderer.onDraw(mediatorMessage.params.elapsedTime);
         }
         else if (mediatorMessage.type === 'onUpdate') {
-            this.renderer.onUpdate(mediatorMessage.params.elapsedTime); // MessageGameLoopOnUpdate
+            this.renderer.onUpdate(mediatorMessage.params.elapsedTime);
         }
     }
 };
