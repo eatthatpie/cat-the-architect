@@ -15,4 +15,16 @@ export default class Scene implements SceneInterface {
     public getEntities(): Array<EntityInterface> {
         return this.entityCollection;
     }
+
+    public onEnter(): void {
+        console.log('[DE: Scene] On enter...');
+
+        console.log('[DE: Scene] On finish enter...');
+    }
+
+    public onLeave(): void {
+        console.log('[DE: Scene] On leave...')
+
+        console.log('[DE: Scene] On finsh leave...')
+    }
 };

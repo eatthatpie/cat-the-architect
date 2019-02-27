@@ -7,6 +7,7 @@ import MediatorColleagueInterface from '@/interfaces/MediatorColleagueInterface'
 import MediatorMessageInterface from '@/interfaces/MediatorMessageInterface';
 import RendererResponderFactory from '@/renderer/RendererResponderFactory';
 import RenderingContextInterface from '@/interfaces/RenderingContextInterface';
+import RenderingTransformationInterface from '@/interfaces/RenderingTransformationInterface';
 
 export default class Renderer extends MediatorColleagueBase implements BootableInterface {
     private canvas: HTMLCanvasElement;
@@ -50,12 +51,39 @@ export default class Renderer extends MediatorColleagueBase implements BootableI
 
         this.notifyMediator(msg);
 
-        // Czy context przekazujemy za każdym razem?
-        msg.params.forEach(entity => entity.onDraw(this.context, elapsedTime)) 
+        msg.params.forEach(entity => {
+            const entityAnimationState = entity.getAnimationState();
 
-        // scenemanager aktualizuje CAŁKOWICIE encje renderera
-        // jeśli scenemanager tego nie robi, renderer zostaje ze starymi encjami (do ustawienia w konfuguracji)
-        // aktualizacja encji może oznaczać ich usunięcie
+            let msg = {
+                type: 'updateAnimationState',
+                params: {
+                    state: entityAnimationState,
+                    updatedState: null,
+                    elapsedTime
+                }
+            }
+
+            this.notifyMediator(msg);
+
+            entity.setAnimationState(msg.params.updatedState);
+
+            if (msg.params.updatedState) {
+                this.applyTransformation(msg.params.updatedState.getRenderingTransformation());
+            }
+
+            entity.onPreDraw(this.context);
+            entity.onDraw(this.context, elapsedTime);
+
+            this.removeTransformation();
+        });
+    }
+
+    public applyTransformation(renderingTransformation: RenderingTransformationInterface): any {
+        
+    }
+
+    public removeTransformation(): any {
+        
     }
 
     public onUpdate(elapsedTime: number): void {
