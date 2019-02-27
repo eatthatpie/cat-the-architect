@@ -1,17 +1,20 @@
-import EntityInterface from '@/interfaces/EntityInterface';
+import EntityBase from '@/entity/EntityBase';
+import Rect from '@/common/math/Rect';
 import RenderingContextInterface from '@/interfaces/RenderingContextInterface';
-import Vector from '@/common/math/Vector';
 import StyleInterface from '@/interfaces/StyleInterface';
 import TextAlign from '@/common/flags/TextAlign';
 import TextEntity from '@/entity/TextEntity';
+import Vector from '@/common/math/Vector';
 
-export default class TextboxEntity implements EntityInterface {
+export default class TextboxEntity extends EntityBase {
     private lines: Array<any>;
     private position: Vector;
     private style: StyleInterface; // @TODO: StyleableInterface?
     private textEntityCollection: Array<TextEntity>;
 
     constructor() {
+        super();
+
         this.lines = [];
         this.position = new Vector();
         this.style = {
@@ -29,6 +32,10 @@ export default class TextboxEntity implements EntityInterface {
         }
 
         return this;
+    }
+
+    public getBoundingBox(context: RenderingContextInterface): Rect {
+        return new Rect({ x: 0, y: 0 }, { x: 100, y: 100 });
     }
 
     public onDraw(context: RenderingContextInterface, elapsedTime: number): any {
