@@ -1,7 +1,10 @@
+import AnimationManager from '@/animation/AnimationManager';
 import Game from '@/game/Game';
 import GameLoop from '@/game/GameLoop';
+import InputManager from '@/input/InputManager';
 import LauncherConfigInterface from '@/interfaces/LauncherConfigInterface';
 import Renderer from '@/renderer/Renderer';
+import ResourceManager from '@/resource/ResourceManager';
 import SceneManager from '@/scene/SceneManager';
 import SoundManager from '@/sound/SoundManager';
 import SystemMediator from '@/system/SystemMediator';
@@ -16,6 +19,9 @@ export default class GameLauncher {
         systemMediator.registerSystem(new GameLoop(systemMediator));
         systemMediator.registerSystem(new Renderer(systemMediator));
         systemMediator.registerSystem(new SoundManager(systemMediator));
+        systemMediator.registerSystem(new InputManager(systemMediator));
+        systemMediator.registerSystem(new ResourceManager(systemMediator));
+        systemMediator.registerSystem(new AnimationManager(systemMediator));
         systemMediator.registerSystem(new Game(systemMediator));
 
         try {
