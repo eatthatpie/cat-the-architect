@@ -4,7 +4,6 @@ import Rect from '@/common/math/Rect';
 import Scene from '@/scene/Scene';
 import SpriteEntity from '@/entity/SpriteEntity';
 import TextAlign from '@/common/flags/TextAlign';
-import TextboxEntity from '@/entity/TextboxEntity';
 import TextEntity from '@/entity/TextEntity';
 import Vector from '@/common/math/Vector';
 
@@ -30,7 +29,34 @@ export default class Game extends GameBase {
         // menuScene.addEntity(
         //     new TextEntity('лучшие результаты', new Vector(400, 290))
         // );
- 
+
+        // @IDEA: STORE IDEA
+
+        // Store.dispatch('entities.moveCurrentBlock', {})
+        // Store.get('entities.currentBlock');
+        // Store.subscribe('entities.currentBlock').to(SpriteEntity, data => {
+        //     return {
+        //         test: data.value,
+        //         secondValue: 0
+        //     }
+        // });
+
+        // Store.registerModule('entities', {
+        //     state: {
+
+        //     },
+        //     dispatchers: {
+        //         moveCurrentBlock() {
+
+        //         }
+        //     },
+        //     getters: {
+        //         currentBlock() {
+
+        //         }
+        //     }
+        // });
+
         menuScene.addEntity(
             new SpriteEntity(
                 '/assets/backgrounds/example.jpg', 

@@ -29,4 +29,12 @@ export default class SpriteEntity extends EntityBase {
     public setPosition(position: Vector): SpriteEntity {
         return this;
     }
+
+    // public storeData({ test, secondValue }) {
+
+    // }
+
+    // public storeDataChange({ test, secondValue }) {
+
+    // }
 }
