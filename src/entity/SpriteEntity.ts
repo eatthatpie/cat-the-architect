@@ -30,11 +30,11 @@ export default class SpriteEntity extends EntityBase {
         return this;
     }
 
-    // public storeData({ test, secondValue }) {
+    // public storeData({ get, dispatch }, { test, secondValue }) {
 
     // }
 
-    // public storeDataChange({ test, secondValue }) {
+    // public storeDataChange({ get, dispatch }, { test, secondValue }) {
 
     // }
 }

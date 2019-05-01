@@ -3,6 +3,7 @@ import LauncherConfigInterface from '@/interfaces/LauncherConfigInterface';
 import Rect from '@/common/math/Rect';
 import Scene from '@/scene/Scene';
 import SpriteEntity from '@/entity/SpriteEntity';
+import Store from '@/store/Store';
 import TextAlign from '@/common/flags/TextAlign';
 import TextEntity from '@/entity/TextEntity';
 import Vector from '@/common/math/Vector';
@@ -30,10 +31,6 @@ export default class Game extends GameBase {
         //     new TextEntity('лучшие результаты', new Vector(400, 290))
         // );
 
-        // @IDEA: STORE IDEA
-
-        // Store.dispatch('entities.moveCurrentBlock', {})
-        // Store.get('entities.currentBlock');
         // Store.subscribe('entities.currentBlock').to(SpriteEntity, data => {
         //     return {
         //         test: data.value,
@@ -41,21 +38,29 @@ export default class Game extends GameBase {
         //     }
         // });
 
-        // Store.registerModule('entities', {
-        //     state: {
+        const store = new Store();
 
-        //     },
-        //     dispatchers: {
-        //         moveCurrentBlock() {
+        store.registerModule('entities', {
+            state: {
+                a: 's',
+                b: 0
+            },
+            dispatchers: {
+                moveCurrentBlock({ getState, setState }, { value }) {
+                    setState({
+                        a: getState().a + value
+                    });
+                }
+            },
+            getters: {
+                currentBlock({ getState }) {
+                    return getState().a;
+                }
+            }
+        });
 
-        //         }
-        //     },
-        //     getters: {
-        //         currentBlock() {
-
-        //         }
-        //     }
-        // });
+        store.dispatch('entities.moveCurrentBlock', { value: 'testowa2' });
+        console.log(store.get('entities.currentBlock'));
 
         menuScene.addEntity(
             new SpriteEntity(

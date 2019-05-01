@@ -5,6 +5,7 @@ import StoreModuleSchemaInterface from '@/interfaces/StoreModuleSchemaInterface'
 import StoreSubscriptionInterface from '@/interfaces/StoreSubscriptionInterface';
 import StoreSubscription from './StoreSubscription';
 
+// @TODO: this class need huge refactoring
 export default class Store implements StoreInterface {
     private modules: Array<StoreModuleInterface>;
     private subscriptions: Array<StoreSubscriptionInterface>;
@@ -15,34 +16,40 @@ export default class Store implements StoreInterface {
     }
 
     public dispatch(moduleDispatcherPath: string, params: any = {}): any {
-        const dispatcher = this.resolveModuleDispatcher(moduleDispatcherPath, this.modules);
+        const { moduleName, moduleParam } = this.resolveModulePath(moduleDispatcherPath);
 
-        // notify all subscribers
-        // subscription.update()
-
-        return dispatcher(params);
+        this.getModule(moduleName).callDispatcher(moduleParam, params);
     }
 
     public get(moduleGetterPath: string): any {
-        const getter = this.resolveModuleGetter(moduleGetterPath, this.modules);
+        const { moduleName, moduleParam } = this.resolveModulePath(moduleGetterPath);
 
-        return getter();
+        return this.getModule(moduleName).callGetter(moduleParam);
+    }
+
+    public getModule(moduleName: string): StoreModuleInterface {
+        return this.modules.filter(item => item.getName() === moduleName)[0];
     }
 
     public registerModule(name: string, moduleSchema: StoreModuleSchemaInterface): void {
-        this.modules.push(new StoreModule(moduleSchema));
+        this.modules.push(new StoreModule(name, moduleSchema));
     }
 
-    private resolveModuleGetter(moduleGetterPath: string, modules: Array<StoreModuleInterface>): Function {
-        return () => {}
-    }
+    private resolveModulePath(modulePath: string): any {
+        if (!/^[^\.]+\.[^\.]+$/.test(modulePath)) {
+            throw new Error(`Invalid module path.`);
+        }
 
-    private resolveModuleDispatcher(moduleGetterPath: string, modules: Array<StoreModuleInterface>): Function {
-        return () => {}
+        const pathSegments = modulePath.split('.');
+
+        return {
+            moduleName: pathSegments[0],
+            moduleParam: pathSegments[1]
+        };
     }
 
     public subscribe(moduleGetterPath: string, objectCreatorFunc: Function): StoreSubscriptionInterface {
-        const getter = this.resolveModuleGetter(moduleGetterPath, this.modules);
+        const getter = this.resolveModulePath(moduleGetterPath);
         const subscription = new StoreSubscription(getter(), objectCreatorFunc);
 
         this.subscriptions.push(subscription);
