@@ -1,7 +1,9 @@
 import StoreSubscriberInterface from '@/interfaces/StoreSubscriberInterface';
 
 export default interface StoreSubscriptionInterface {
-    getModuleGetterPath(): string;
-    to(subscriber: StoreSubscriberInterface, objectCreatorFunc: Function): any;
-    update(): any;
+    onUpdate(moduleDispatcherPath: string): any;
+    to(
+        subscriber: StoreSubscriberInterface,
+        dataMapperFunc: Function
+    ): any;
 };

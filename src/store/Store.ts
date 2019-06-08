@@ -22,10 +22,8 @@ export default class Store implements StoreInterface {
         this.getModule(moduleName).callDispatcher(moduleParam, params);
 
         this.subscriptions.forEach(subscription => {
-            if (ModuleResolver.moduleNamesMatch(subscription.getModuleGetterPath(), moduleDispatcherPath)) {
-                subscription.update();
-            }
-        })
+            subscription.onUpdate(moduleDispatcherPath);
+        });
     }
 
     public get(moduleGetterPath: string, params?: any): any {
@@ -52,7 +50,7 @@ export default class Store implements StoreInterface {
         return ModuleResolver.resolvePath(modulePath);
     }
 
-    public subscribe(moduleGetterPath: string): StoreSubscriptionInterface {
+    public subscribe(moduleGetterPath: string|Array<string>): StoreSubscriptionInterface {
         const subscription = new StoreSubscription(this, moduleGetterPath);
 
         this.subscriptions.push(subscription);

@@ -141,51 +141,51 @@ describe(`Store subscription`, () => {
         expect(store.get('pinged.testValue')).toEqual(100);
     });
 
-    // test(`subscriber can subscribe to more than one getter`, () => {
-    //     const subscriber = new (class implements StoreSubscriberInterface {
-    //         public mappedValue: number = 0;
+    test(`subscriber can subscribe to more than one getter`, () => {
+        const subscriber = new (class implements StoreSubscriberInterface {
+            public mappedValue: number = 0;
 
-    //         public storeData({ get, dispatch }, { mappedValue, factor }): any {
-    //             this.mappedValue = mappedValue;
-    //         }
+            public storeData({ get, dispatch }, { mappedValue, factor }): any {
+                this.mappedValue = mappedValue;
+            }
     
-    //         public storeDataChange({ get, dispatch }, { mappedValue, factor }): any {
-    //             this.mappedValue = mappedValue * factor;
-    //         }
-    //     })();
+            public storeDataChange({ get, dispatch }, { mappedValue, factor }): any {
+                this.mappedValue = mappedValue * factor;
+            }
+        })();
     
-    //     const store = new Store();
+        const store = new Store();
     
-    //     store.registerModule('test', {
-    //         state: {
-    //             test: 1928
-    //         },
-    //         getters: {
-    //             testValue({ getState }) {
-    //                 return getState().test;
-    //             },
-    //             factor({ getState }) {
-    //                 return getState().test / 964;
-    //             }
-    //         },
-    //         dispatchers: {
-    //             increaseValue({ getState, setState }, value) {
-    //                 const increaseValue = getState().test + value;
+        store.registerModule('test', {
+            state: {
+                test: 1928
+            },
+            getters: {
+                testValue({ getState }) {
+                    return getState().test;
+                },
+                factor({ getState }) {
+                    return getState().test / 1000;
+                }
+            },
+            dispatchers: {
+                increaseValue({ getState, setState }, value) {
+                    const increaseValue = getState().test + value;
 
-    //                 setState({ test: increaseValue });
-    //             }
-    //         }
-    //     });
+                    setState({ test: increaseValue });
+                }
+            }
+        });
     
-    //     store.subscribe(['test.testValue', 'test.factor']).to(subscriber, data => {
-    //         return {
-    //             mappedValue: data.test.testValue,
-    //             factor: data.test.factor
-    //         };
-    //     });
+        store.subscribe(['test.testValue', 'test.factor']).to(subscriber, data => {
+            return {
+                mappedValue: data.test.testValue,
+                factor: data.test.factor
+            };
+        });
 
-    //     store.dispatch('test.increaseValue', 72);
+        store.dispatch('test.increaseValue', 72);
 
-    //     expect(subscriber.mappedValue).toEqual(4000);
-    // });
+        expect(subscriber.mappedValue).toEqual(4000);
+    });
 });
