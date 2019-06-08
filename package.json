@@ -1,9 +1,14 @@
 {
     "scripts": {
         "dev": "webpack-dev-server --mode development --hot",
-        "build": "webpack --config webpack.config.js"
+        "dev-server": "webpack-dev-server --mode development --host 192.168.1.15 --hot",
+        "build": "webpack --config webpack.config.js",
+        "test": "jest"
     },
     "devDependencies": {
+        "@types/jest": "^24.0.13",
+        "jest": "^24.8.0",
+        "ts-jest": "^24.0.2",
         "ts-loader": "^5.3.3",
         "typescript": "^3.2.4",
         "webpack": "^4.29.0",
