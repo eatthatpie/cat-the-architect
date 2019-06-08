@@ -1,5 +1,6 @@
+import ModuleResolver from '@/common/helpers/ModuleResolver';
 import StoreInterface from '@/interfaces/StoreInterface';
-import StoreModule from './StoreModule';
+import StoreModule from '@/store/StoreModule';
 import StoreModuleInterface from '@/interfaces/StoreModuleInterface';
 import StoreModuleSchemaInterface from '@/interfaces/StoreModuleSchemaInterface';
 import StoreSubscriptionInterface from '@/interfaces/StoreSubscriptionInterface';
@@ -19,16 +20,28 @@ export default class Store implements StoreInterface {
         const { moduleName, moduleParam } = this.resolveModulePath(moduleDispatcherPath);
 
         this.getModule(moduleName).callDispatcher(moduleParam, params);
+
+        this.subscriptions.forEach(subscription => {
+            if (ModuleResolver.moduleNamesMatch(subscription.getModuleGetterPath(), moduleDispatcherPath)) {
+                subscription.update();
+            }
+        })
     }
 
-    public get(moduleGetterPath: string): any {
+    public get(moduleGetterPath: string, params?: any): any {
         const { moduleName, moduleParam } = this.resolveModulePath(moduleGetterPath);
 
-        return this.getModule(moduleName).callGetter(moduleParam);
+        return this.getModule(moduleName).callGetter(moduleParam, params);
     }
 
-    public getModule(moduleName: string): StoreModuleInterface {
-        return this.modules.filter(item => item.getName() === moduleName)[0];
+    private getModule(moduleName: string): StoreModuleInterface {
+        const module = this.modules.find(item => item.getName() === moduleName);
+
+        if (!module) {
+            throw new Error(`Store module named ${moduleName} is not registered in store.`);
+        }
+
+        return module;
     }
 
     public registerModule(name: string, moduleSchema: StoreModuleSchemaInterface): void {
@@ -36,21 +49,11 @@ export default class Store implements StoreInterface {
     }
 
     private resolveModulePath(modulePath: string): any {
-        if (!/^[^\.]+\.[^\.]+$/.test(modulePath)) {
-            throw new Error(`Invalid module path.`);
-        }
-
-        const pathSegments = modulePath.split('.');
-
-        return {
-            moduleName: pathSegments[0],
-            moduleParam: pathSegments[1]
-        };
+        return ModuleResolver.resolvePath(modulePath);
     }
 
-    public subscribe(moduleGetterPath: string, objectCreatorFunc: Function): StoreSubscriptionInterface {
-        const getter = this.resolveModulePath(moduleGetterPath);
-        const subscription = new StoreSubscription(getter(), objectCreatorFunc);
+    public subscribe(moduleGetterPath: string): StoreSubscriptionInterface {
+        const subscription = new StoreSubscription(this, moduleGetterPath);
 
         this.subscriptions.push(subscription);
 

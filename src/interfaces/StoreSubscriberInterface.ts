@@ -1,4 +1,4 @@
 export default interface StoreSubscriberInterface {
-    storeData(params: any): any;
-    storeDataUpdate(params: any): any
+    storeData(accessors: Object, params?: any): any;
+    storeDataChange(accessors: Object, params?: any): any;
 };

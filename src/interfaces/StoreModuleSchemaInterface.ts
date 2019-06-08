@@ -1,5 +1,5 @@
 export default interface StoreModuleSchemaInterface {
-    state?: object;
+    state: object;
     dispatchers?: object;
-    getters?: object;
+    getters: object;
 };
