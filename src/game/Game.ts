@@ -6,8 +6,7 @@ import Scene from '@/scene/Scene';
 import Store from '@/store/Store';
 import storeModules from '@/game/store/index';
 import StoreSubscriberInterface from '@/interfaces/StoreSubscriberInterface';
-import TextEntity from '@/entity/TextEntity';
-import Vector from '@/common/math/Vector';
+import { gameStateTickListener } from '@/game/listeners/index';
 
 export default class Game extends GameBase implements StoreSubscriberInterface {
     private currentScene: string;
@@ -60,17 +59,17 @@ export default class Game extends GameBase implements StoreSubscriberInterface {
             });
 
         // This should be fired only on game mode (scene == game)
-        // setInterval(() => {
-        //     this.store.dispatch('gameState.tick');
-        // }, 1000);
+        setInterval(() => {
+            this.store.dispatch('gameState.tick');
+        }, 1000);
 
-        // this.store
-        //     .subscribe('gameState.tick')
-        //     .to(gameStateTickListener, data => {
-        //         return {
-        //             currentBlockIsAbleToGoDown: data.currentBlockIsAbleToGoDown
-        //         };
-        //     });
+        this.store
+            .subscribe('gameState.tick')
+            .to(gameStateTickListener, data => {
+                return {
+                    currentBlockIsAbleToGoDown: data.currentBlockIsAbleToGoDown
+                };
+            });
 
         console.log('[DE: Game] Up & running!');
     }

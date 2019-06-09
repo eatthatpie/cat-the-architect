@@ -1,9 +1,18 @@
-export default class {
+import StoreSubscriberInterface from "@/interfaces/StoreSubscriberInterface";
+
+export default new (class implements StoreSubscriberInterface {
+    storeData({ get, dispatch }, { state }): void {
+
+    }
+
     /**
      * Method fires on current block tick down (every one second).
      */
-    storeStateUpdate({ get, dispatch }, { state }) {
-        const { currentBlockIsAbleToGoDown } = state;
+    storeDataChange({ get, dispatch }, { currentBlockIsAbleToGoDown }): void {
+
+        console.log(`tick fired`);
+        dispatch('currentBlockEntity.updatePosition')
+        return;
 
         // + other game state events:
         // - game start (reset all states)
@@ -61,4 +70,4 @@ export default class {
             }
         }
     }
-};
+})();

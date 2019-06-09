@@ -1,5 +1,6 @@
 export default {
     state: {
+        positionY: 0
     },
     getters: {
         state({ getState }) {
@@ -7,5 +8,12 @@ export default {
         }
     },
     dispatchers: {
+        updatePosition({ getState, setState }) {
+            const updatedPositionY = getState().positionY + 20;
+
+            setState({
+                positionY: updatedPositionY
+            })
+        }
     }
 };
