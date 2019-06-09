@@ -6,9 +6,9 @@ import RenderingContextInterface from '@/interfaces/RenderingContextInterface';
 import Vector from '@/common/math/Vector';
 
 export default class SpriteEntity extends EntityBase {
-    private imageSource: ImageResourceInterface;
-    private sourceRect: Rect;
-    private canvasRect: Rect;
+    protected imageSource: ImageResourceInterface;
+    protected sourceRect: Rect;
+    protected canvasRect: Rect;
 
     constructor(imageSourcePath: string, sourceRect: Rect, canvasRect: Rect) {
         super();
@@ -29,12 +29,4 @@ export default class SpriteEntity extends EntityBase {
     public setPosition(position: Vector): SpriteEntity {
         return this;
     }
-
-    // public storeData({ get, dispatch }, { test, secondValue }) {
-
-    // }
-
-    // public storeDataChange({ get, dispatch }, { test, secondValue }) {
-
-    // }
 }

@@ -5,6 +5,7 @@ import MediatorColleagueBase from '@/common/MediatorColleagueBase';
 import MediatorColleagueInterface from '@/interfaces/MediatorColleagueInterface';
 import MediatorInterface from '@/interfaces/MediatorInterface';
 import MediatorMessageInterface from '@/interfaces/MediatorMessageInterface';
+import Timeout from '@/common/helpers/Timeout';
 
 export default class GameLoop extends MediatorColleagueBase implements GameLoopInterface, BootableInterface {
     private lastIterationTime: number;
@@ -18,13 +19,13 @@ export default class GameLoop extends MediatorColleagueBase implements GameLoopI
             || window.webkitRequestAnimationFrame
             // || window.msRequestAnimationFrame
             || function (callback) { 
-                return setTimeout(callback, 1000/60) 
+                return Timeout.set(callback, 1000/60) 
             }
         
         window.cancelAnimationFrame = window.cancelAnimationFrame
             // || window.mozCancelAnimationFrame
             || function (timeoutId) {
-                clearTimeout(timeoutId)
+                Timeout.clear(timeoutId)
             }
     }
 
