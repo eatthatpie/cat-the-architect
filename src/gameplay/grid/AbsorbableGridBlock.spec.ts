@@ -28,4 +28,12 @@ describe(`Absorbable grid block`, () => {
             [new GridCell(), new GridCell(), new GridCell()]
         ]);
     });
+
+    // test(`can absorb another grid block with specified position`, () => {});
+
+    // test(`absorption cannot extend absorbable grid block's dimensions`, () => {})
+
+    // test(`taken cells can collide with other grid block's taken cells`, () => {});
+
+    // it(`can predict absorbed grid block's collision point`, () => {});
 });
