@@ -1,5 +1,5 @@
 import AnimationManager from '@/animation/AnimationManager';
-import Game from '@/game/Game';
+import Gameplay from '@/gameplay/Gameplay';
 import GameLoop from '@/game/GameLoop';
 import InputManager from '@/input/InputManager';
 import LauncherConfigInterface from '@/interfaces/LauncherConfigInterface';
@@ -22,7 +22,7 @@ export default class GameLauncher {
         systemMediator.registerSystem(new InputManager(systemMediator));
         systemMediator.registerSystem(new ResourceManager(systemMediator));
         systemMediator.registerSystem(new AnimationManager(systemMediator));
-        systemMediator.registerSystem(new Game(systemMediator));
+        systemMediator.registerSystem(new Gameplay(systemMediator));
 
         try {
             systemMediator.bootSystems();

@@ -14,7 +14,7 @@ export default class CurrentBlockEntity extends SpriteEntity /** BlockEntity */ 
             null
         );
 
-        this.position = new Vector(100, 220);
+        this.position = new Vector(100, 220); 
     }
 
     public onDraw(context: RenderingContextInterface, elapsedTime: number): void {

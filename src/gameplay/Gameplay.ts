@@ -1,14 +1,14 @@
-import CurrentBlockEntity from '@/game/entities/CurrentBlockEntity';
+import CurrentBlockEntity from '@/gameplay/entities/CurrentBlockEntity';
 import GameBase from '@/game/GameBase';
-import GroupEntity from '@/game/entities/GroupEntity';
+import GroupEntity from '@/gameplay/entities/GroupEntity';
 import LauncherConfigInterface from '@/interfaces/LauncherConfigInterface';
 import Scene from '@/scene/Scene';
 import Store from '@/store/Store';
-import storeModules from '@/game/store/index';
+import storeModules from '@/gameplay/store/index';
 import StoreSubscriberInterface from '@/interfaces/StoreSubscriberInterface';
-import { gameStateTickListener } from '@/game/listeners/index';
+import { gameStateTickListener } from '@/gameplay/listeners/index';
 
-export default class Game extends GameBase implements StoreSubscriberInterface {
+export default class Gameplay extends GameBase implements StoreSubscriberInterface {
     private currentScene: string;
     private scenes: any;
     private store: Store;
