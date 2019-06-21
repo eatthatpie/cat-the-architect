@@ -1,9 +1,10 @@
+import GridBlock from './GridBlock';
 import GridCell from './GridCell';
-import RotatableGridBlock from './RotatableGridBlock';
+import RotatableGridBlockDecorator from './RotatableGridBlockDecorator';
 
 describe(`Rotatable grid block`, () => {
     test(`taken cells are defined by rotation step`, () => {
-        const gridBlock = new RotatableGridBlock({ cols: 3, rows: 4 });
+        const gridBlock = new RotatableGridBlockDecorator(new GridBlock({ cols: 3, rows: 4 }));
 
         gridBlock.addRotationStep(
             [
@@ -24,7 +25,7 @@ describe(`Rotatable grid block`, () => {
     });
 
     test(`the rotation steps are looped`, () => {
-        const gridBlock = new RotatableGridBlock({ cols: 2, rows: 3 });
+        const gridBlock = new RotatableGridBlockDecorator(new GridBlock({ cols: 2, rows: 3 }));
 
         gridBlock.addRotationStep(
             [
@@ -70,7 +71,7 @@ describe(`Rotatable grid block`, () => {
     });
 
     test(`the next rotation step can be previewed`, () => {
-        const gridBlock = new RotatableGridBlock({ cols: 2, rows: 3 });
+        const gridBlock = new RotatableGridBlockDecorator(new GridBlock({ cols: 2, rows: 3 }));
 
         gridBlock.addRotationStep(
             [

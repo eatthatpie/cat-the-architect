@@ -24,4 +24,22 @@ describe(`Grid block`, () => {
             ]
         );
     });
+
+    test(`the two dimensional array can be produced directly with other array`, () => {
+        const gridBlock = new GridBlock([
+            [new GridCell(), new GridCell(), new GridCell()],
+            [new GridCell(), new GridCell(), new GridCell()],
+            [new GridCell(), new GridCell(), new GridCell()],
+            [new GridCell(), new GridCell(), new GridCell()]
+        ]);
+
+        expect(gridBlock.toArray()).toEqual(
+            [
+                [new GridCell(), new GridCell(), new GridCell()],
+                [new GridCell(), new GridCell(), new GridCell()],
+                [new GridCell(), new GridCell(), new GridCell()],
+                [new GridCell(), new GridCell(), new GridCell()]
+            ]
+        );
+    });
 });

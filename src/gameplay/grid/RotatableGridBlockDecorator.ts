@@ -1,13 +1,13 @@
-import GridBlock from './GridBlock';
-import GridCell from './GridCell';
+import GridBlockInterface from '@/gameplay/interfaces/GridBlockInterface'
+import GridCell from '@/gameplay/grid/GridCell';
 
-export default class RotatableGridBlock extends GridBlock {
+export default class RotatableGridBlockDecorator implements GridBlockInterface {
+    private gridBlock: GridBlockInterface;
     private rotationIndex: number;
     private rotationSteps: Array <any>;
 
-    public constructor(params?: any, cells?: Array<any>) {
-        super(params, cells);
-
+    public constructor(gridBlock: GridBlockInterface) {
+        this.gridBlock = gridBlock;
         this.rotationIndex = 0;
         this.rotationSteps = [];
     }
@@ -27,10 +27,10 @@ export default class RotatableGridBlock extends GridBlock {
             this.rotationSteps.length === 0 ||
             rotationIndex > this.rotationSteps.length - 1
         ) {
-            return this.cells;
+            return this.gridBlock.toArray();
         }
 
-        let out = JSON.parse(JSON.stringify(this.cells));
+        let out = JSON.parse(JSON.stringify(this.gridBlock.toArray()));
 
         this.rotationSteps[rotationIndex].forEach(stepCell => {
             out[stepCell.row - 1][stepCell.col - 1] = new GridCell({
@@ -54,10 +54,10 @@ export default class RotatableGridBlock extends GridBlock {
             this.rotationSteps.length === 0 ||
             this.rotationIndex > this.rotationSteps.length - 1
         ) {
-            return this.cells;
+            return this.gridBlock.toArray();
         }
 
-        let out = JSON.parse(JSON.stringify(this.cells));
+        let out = JSON.parse(JSON.stringify(this.gridBlock.toArray()));
 
         this.rotationSteps[this.rotationIndex].forEach(stepCell => {
             out[stepCell.row - 1][stepCell.col - 1] = new GridCell({
