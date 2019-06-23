@@ -1,5 +1,7 @@
+import RotatableGridBlockContract from "../interfaces/RotatableGridBlockContract";
+
 export default class RotatableGridBlockGenerator {
-    protected blocksCollection: Array<any>;
+    protected blocksCollection: Array<RotatableGridBlockContract>;
 
     constructor() {
         this.blocksCollection = [
@@ -162,7 +164,7 @@ export default class RotatableGridBlockGenerator {
         ];
     }
 
-    public generate(): Array<any> {
+    public generate(): RotatableGridBlockContract {
         let randomIndex = Math.floor(Math.random() * this.blocksCollection.length);
 
         randomIndex = randomIndex >= this.blocksCollection.length

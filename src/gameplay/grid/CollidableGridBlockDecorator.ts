@@ -9,6 +9,10 @@ export default class CollidableGridBlockDecorator extends GridBlockDecotator imp
         super(gridBlock);
     }
 
+    public getGridBlock(): GridBlockInterface {
+        return this.gridBlock;
+    }
+
     public getCollisionPositionWith(
         gridBlock: GridBlockInterface,
         direction: Direction,
@@ -68,7 +72,7 @@ export default class CollidableGridBlockDecorator extends GridBlockDecotator imp
         for (let i = 0; i < rowsCount; i++) {
             for (let j = 0; j < colsCount; j++) {
                 if (gridBlockArray[i] && gridBlockArray[i][j] && this.gridBlock.toArray()[i] && this.gridBlock.toArray()[i][j]) {
-                    if (gridBlockArray[i][j].getIsTaken() && this.gridBlock.toArray()[i][j].getIsTaken()) {
+                    if (gridBlockArray[i][j].getIsTaken && gridBlockArray[i][j].getIsTaken() && this.gridBlock.toArray()[i][j].getIsTaken()) {
                         return true;
                     }
                 }

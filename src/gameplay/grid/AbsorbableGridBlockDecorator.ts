@@ -54,7 +54,7 @@ export default class AbsorbableGridBlockDecorator extends GridBlockDecotator imp
             for (let j = 0; j < colsCount; j++) {
                 out[i][j] = this.gridBlock.toArray()[i][j];
 
-                if (gridBlockArray[i] && gridBlockArray[i][j] && gridBlockArray[i][j].getIsTaken()) {
+                if (gridBlockArray[i] && gridBlockArray[i][j] && gridBlockArray[i][j].getIsTaken && gridBlockArray[i][j].getIsTaken()) {
                     out[i][j] = this.gridBlock.toArray()[i][j] = gridBlockArray[i][j];
                 }
             }
