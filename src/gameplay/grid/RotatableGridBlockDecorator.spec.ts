@@ -4,6 +4,7 @@ import RotatableGridBlockDecorator from './RotatableGridBlockDecorator';
 
 describe(`Rotatable grid block`, () => {
     test(`taken cells are defined by rotation step`, () => {
+        // @TODO: what about the type?
         const gridBlock = new RotatableGridBlockDecorator(new GridBlock({ cols: 3, rows: 4 }));
 
         gridBlock.addRotationStep(
