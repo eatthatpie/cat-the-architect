@@ -1,17 +1,33 @@
+import GridBlock from './GridBlock';
+import GridBlockDecotator from './GridBlockDecorator';
 import GridBlockInterface from '@/gameplay/interfaces/GridBlockInterface';
 import GridCoordInterface from '@/gameplay/interfaces/GridCoordInterface';
-import GridBlock from './GridBlock';
-import Vector from '@/common/math/Vector';
+import { Direction } from '@/common/Types';
 
-export default class CollidableGridBlockDecorator implements GridBlockInterface {
-    protected gridBlock: GridBlockInterface;
-
+export default class CollidableGridBlockDecorator extends GridBlockDecotator implements GridBlockInterface {
     public constructor(gridBlock: GridBlockInterface) {
-        this.gridBlock = gridBlock;
+        super(gridBlock);
     }
 
-    public getCollisionPositionWith(gridBlock: GridBlockInterface, vector: Vector, coords?: GridCoordInterface): Array<Array<any>> {
-        return [[]];
+    public getCollisionPositionWith(
+        gridBlock: GridBlockInterface,
+        direction: Direction,
+        coords?: GridCoordInterface
+    ): GridCoordInterface {
+        if (direction !== Direction.DOWN) {
+            throw new Error(`Method getCollisionPositionWith for given vector is not implemented yet.`);
+        }
+
+        let col = coords ? coords.col : 1;
+        let row = coords ? coords.row : 1;
+
+        while(!this.isCollidingWith(gridBlock, { col, row }) && row < 20) {
+            row++;
+        }
+
+        row--;
+
+        return { col, row };
     }
 
     public isCollidingWith(gridBlock: GridBlockInterface, coords?: GridCoordInterface): Boolean {
@@ -25,7 +41,7 @@ export default class CollidableGridBlockDecorator implements GridBlockInterface 
             let result = [];
 
             if (this.gridBlock.toArray().length < targetRows || this.gridBlock.toArray()[0].length < targetCols) {
-                throw new Error(`Grid absorption cannot extend absorbable grid block's dimensions.`);
+                return true;
             }
 
             for (let i = 0; i < targetRows; i++) {
@@ -60,9 +76,5 @@ export default class CollidableGridBlockDecorator implements GridBlockInterface 
         }
 
         return false;
-    }
-
-    public toArray(): Array<any> {
-        return this.gridBlock.toArray();
     }
 }

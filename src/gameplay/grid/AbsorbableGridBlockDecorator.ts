@@ -1,12 +1,11 @@
 import GridBlock from '@/gameplay/grid/GridBlock';
+import GridBlockDecotator from './GridBlockDecorator';
 import GridBlockInterface from '@/gameplay/interfaces/GridBlockInterface';
 import GridCoordInterface from '@/gameplay/interfaces/GridCoordInterface';
 
-export default class AbsorbableGridBlockDecorator implements GridBlockInterface {
-    protected gridBlock: GridBlockInterface;
-
+export default class AbsorbableGridBlockDecorator extends GridBlockDecotator implements GridBlockInterface {
     public constructor(gridBlock: GridBlockInterface) {
-        this.gridBlock = gridBlock;
+        super(gridBlock);
     }
 
     public absorb(gridBlock: GridBlock, coords?: GridCoordInterface): AbsorbableGridBlockDecorator {
@@ -62,9 +61,5 @@ export default class AbsorbableGridBlockDecorator implements GridBlockInterface 
         }
 
         return this;
-    }
-
-    public toArray(): Array<any> {
-        return this.gridBlock.toArray();
     }
 }

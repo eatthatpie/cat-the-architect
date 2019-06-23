@@ -1,13 +1,14 @@
+import GridBlockDecotator from './GridBlockDecorator';
 import GridBlockInterface from '@/gameplay/interfaces/GridBlockInterface'
 import GridCell from '@/gameplay/grid/GridCell';
 
-export default class RotatableGridBlockDecorator implements GridBlockInterface {
-    private gridBlock: GridBlockInterface;
+export default class RotatableGridBlockDecorator extends GridBlockDecotator implements GridBlockInterface {
     private rotationIndex: number;
     private rotationSteps: Array <any>;
 
     public constructor(gridBlock: GridBlockInterface) {
-        this.gridBlock = gridBlock;
+        super(gridBlock);
+
         this.rotationIndex = 0;
         this.rotationSteps = [];
     }

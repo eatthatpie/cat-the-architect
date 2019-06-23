@@ -1,7 +1,7 @@
 import CollidableGridBlockDecorator from './CollidableGridBlockDecorator';
 import GridBlock from './GridBlock';
 import GridCell from './GridCell';
-import Vector from '../../common/math/Vector'
+import { Direction } from '../../common/Types';
 
 describe(`Collidable grid block`, () => {
     it(`is testable`, () => {
@@ -38,18 +38,22 @@ describe(`Collidable grid block`, () => {
             [new GridCell({ isTaken: true }), new GridCell({ isTaken: true }), new GridCell(), new GridCell()]
         ]));
 
-        const collidingGridBlock = new GridBlock([
-            [new GridCell({ isTaken: true }), new GridCell({ isTaken: true })],
-            [new GridCell(), new GridCell()]
-        ]);
-
-        expect(gridBlock.getCollisionPositionWith(collidingGridBlock, new Vector(0, 1), { col: 2, row: 1 })).toEqual(
+        const collidingGridBlock = new GridBlock(
             [
-                [new GridCell(), new GridCell(), new GridCell(), new GridCell()],
-                [new GridCell(), new GridCell(), new GridCell(), new GridCell()],
-                [new GridCell({ isTaken: true }), new GridCell(), new GridCell(), new GridCell()],
-                [new GridCell({ isTaken: true }), new GridCell({ isTaken: true }), new GridCell(), new GridCell()]
+                [new GridCell({ isTaken: true }), new GridCell({ isTaken: true })],
+                [new GridCell(), new GridCell()]
             ]
         );
+
+        expect(
+            gridBlock.getCollisionPositionWith(
+                collidingGridBlock,
+                Direction.DOWN,
+                { col: 2, row: 1 }
+            )
+        )
+        .toEqual({ col: 2, row: 3 });
     });
+
+    // grid block get width get height
 });

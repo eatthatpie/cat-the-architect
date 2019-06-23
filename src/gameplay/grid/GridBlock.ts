@@ -25,6 +25,18 @@ export default class GridBlock implements GridBlockInterface {
         }
     }
 
+    public getHeight(): Number {
+        return this.cells.length;
+    }
+
+    public getWidth(): Number {
+        return this.getHeight() > 0 ? this.cells[0].length : 0;
+    }
+
+    public setCells(cells: Array<any>): void {
+        this.cells = cells;
+    }
+
     public toArray(): Array<any> {
         return this.cells;
     }
