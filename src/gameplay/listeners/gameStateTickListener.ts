@@ -58,7 +58,7 @@ export default new (class implements StoreSubscriberInterface {
             console.log(currentBlockState);
 
             // update state only
-            gridState.getGridBlock().absorb(currentBlockState, {
+            gridState.absorb(currentBlockState, {
                 col: currentBlockEntityState.col,
                 row: currentBlockEntityState.row,
             });

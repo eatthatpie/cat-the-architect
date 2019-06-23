@@ -8,7 +8,7 @@ export default class AbsorbableGridBlockDecorator extends GridBlockDecotator imp
         super(gridBlock);
     }
 
-    public absorb(gridBlock: GridBlock, coords?: GridCoordInterface): AbsorbableGridBlockDecorator {
+    public absorb(gridBlock: GridBlockInterface, coords?: GridCoordInterface): GridBlockInterface {
         let gridBlockArray = gridBlock.toArray();
 
         if (coords) {

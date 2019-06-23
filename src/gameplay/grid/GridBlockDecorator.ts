@@ -1,10 +1,48 @@
 import GridBlockInterface from "../interfaces/GridBlockInterface";
+import GridCoordInterface from "../interfaces/GridCoordInterface";
+import { Direction } from "@/common/Types";
 
 export default class GridBlockDecorator implements GridBlockInterface {
     protected gridBlock: GridBlockInterface;
 
     public constructor(gridBlock: GridBlockInterface) {
         this.gridBlock = gridBlock;
+    }
+
+    public absorb(gridBlock: GridBlockInterface, coords?: GridCoordInterface): GridBlockInterface {
+        throw new Error("Method not implemented.");
+    }
+    
+    public addRotationStep(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    public collapse(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    public getCollisionPositionWith(
+        gridBlock: GridBlockInterface,
+        direction: Direction,
+        coords?: GridCoordInterface
+    ): GridCoordInterface {
+        throw new Error("Method not implemented.");
+    }
+
+    public getNextRotationArray(): Array<any> {
+        throw new Error("Method not implemented.");
+    }
+
+    public isCollapsable(): Boolean {
+        throw new Error("Method not implemented.");
+    }
+
+    public isCollidingWith(gridBlock: GridBlockInterface, coords?: GridCoordInterface): Boolean {
+        throw new Error("Method not implemented.");
+    }
+
+    public rotate(): void {
+        throw new Error("Method not implemented.");
     }
 
     public getHeight(): Number {
