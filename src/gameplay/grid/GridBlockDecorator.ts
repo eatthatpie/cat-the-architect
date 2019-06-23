@@ -13,7 +13,7 @@ export default class GridBlockDecorator implements GridBlockInterface {
         throw new Error("Method not implemented.");
     }
     
-    public addRotationStep(): void {
+    public addRotationStep(cells: Array <any>): void {
         throw new Error("Method not implemented.");
     }
 

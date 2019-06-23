@@ -3,7 +3,7 @@ import { Direction } from "@/common/Types";
 
 export default interface GridBlockInterface {
     absorb(gridBlock: GridBlockInterface, coords?: GridCoordInterface): GridBlockInterface;
-    addRotationStep(): void;
+    addRotationStep(cells: Array <any>): void;
     collapse(): void;
     getCollisionPositionWith(
         gridBlock: GridBlockInterface,

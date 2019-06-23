@@ -18,6 +18,10 @@ export default class GridBlock implements GridBlockInterface {
             this.cells = [];
 
             for (let i = 0; i < cells.rows; i++) {
+                if (!cells.cols) {
+                    continue;
+                }
+            
                 this.cells[i] = [];
     
                 for (let j = 0; j < cells.cols; j++) {
@@ -31,7 +35,7 @@ export default class GridBlock implements GridBlockInterface {
         throw new Error("Method not implemented.");
     }
     
-    public addRotationStep(): void {
+    public addRotationStep(cells: Array <any>): void {
         throw new Error("Method not implemented.");
     }
 

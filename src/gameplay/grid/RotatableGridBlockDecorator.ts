@@ -13,7 +13,7 @@ export default class RotatableGridBlockDecorator extends GridBlockDecotator impl
         this.rotationSteps = [];
     }
 
-    public addRotationStep(cells: Array < any > ): void {
+    public addRotationStep(cells: Array <any>): void {
         this.rotationSteps.push(cells);
     }
 
@@ -50,7 +50,7 @@ export default class RotatableGridBlockDecorator extends GridBlockDecotator impl
         }
     }
 
-    public toArray(): Array < any > {
+    public toArray(): Array <any> {
         if (
             this.rotationSteps.length === 0 ||
             this.rotationIndex > this.rotationSteps.length - 1
