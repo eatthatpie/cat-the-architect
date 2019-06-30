@@ -7,6 +7,11 @@ import Store from '@/store/Store';
 import storeModules from '@/gameplay/store/index';
 import StoreSubscriberInterface from '@/interfaces/StoreSubscriberInterface';
 import { gameStateTickListener } from '@/gameplay/listeners/index';
+import MediatorMessageInterface from '@/interfaces/MediatorMessageInterface';
+import MediatorColleagueInterface from '@/interfaces/MediatorColleagueInterface';
+import GameplayResponderFactory from './GameplayResponderFactory';
+import GridBlock from './grid/GridBlock';
+import { Direction } from '@/common/Types';
 
 export default class Gameplay extends GameBase implements StoreSubscriberInterface {
     private currentScene: string;
@@ -80,6 +85,118 @@ export default class Gameplay extends GameBase implements StoreSubscriberInterfa
         Object.keys(storeModules).forEach(moduleName => {
             this.store.registerModule(moduleName, storeModules[moduleName]);
         });
+    }
+
+    public onKeyUp({ code }): void {
+        switch (code) {
+            case 'ArrowLeft':
+                if (
+                    !this.store
+                        .get('groupEntity.grid')
+                        .isCollidingWith(
+                            this.store.get('currentBlockEntity.gridBlock'),
+                            {
+                                row: this.store.get('currentBlockEntity.row'),
+                                col: this.store.get('currentBlockEntity.col') - 1
+                            }
+                        )
+                ) {
+                    this.store.dispatch('currentBlockEntity.moveHorizontal', {
+                        direction: -1
+                    });
+                }
+                
+                break;
+            case 'ArrowRight':
+                if (
+                    !this.store
+                        .get('groupEntity.grid')
+                        .isCollidingWith(
+                            this.store.get('currentBlockEntity.gridBlock'),
+                            {
+                                row: this.store.get('currentBlockEntity.row'),
+                                col: this.store.get('currentBlockEntity.col') + 1
+                            }
+                        )
+                ) {
+                    this.store.dispatch('currentBlockEntity.moveHorizontal', {
+                        direction: 1
+                    });
+                }
+                
+                break;
+            case 'ArrowDown':
+                const gridState = this.store.get('groupEntity.grid');
+    
+                const { row, col } = gridState
+                    .getCollisionPositionWith(
+                        this.store.get('currentBlockEntity.gridBlock'),
+                        Direction.DOWN,
+                        {
+                            row: this.store.get('currentBlockEntity.row'),
+                            col: this.store.get('currentBlockEntity.col')
+                        }
+                    );
+                    
+                // !!DRY violation
+                gridState.absorb(this.store.get('currentBlockEntity.gridBlock'), {
+                    col,
+                    row
+                });
+
+                this.store.dispatch('groupEntity.update', {
+                    grid: gridState
+                });
+
+                this.store.dispatch('currentBlockEntity.reset');
+
+                if (
+                    gridState.isCollidingWith(
+                        this.store.get('currentBlockEntity.gridBlock'),
+                        {
+                            col: this.store.get('currentBlockEntity.col'),
+                            row: this.store.get('currentBlockEntity.row')
+                        }
+                    )
+                ) {
+                    this.store.dispatch('groupEntity.reset');
+                    this.store.dispatch('currentBlockEntity.reset');
+                }
+                
+                break;
+            case 'Space':
+                if (
+                    !this.store
+                        .get('groupEntity.grid')
+                        .isCollidingWith(
+                            new GridBlock(
+                                this.store
+                                    .get('currentBlockEntity.gridBlock')
+                                    .getNextRotationArray()
+                            ),
+                            {
+                                row: this.store.get('currentBlockEntity.row'),
+                                col: this.store.get('currentBlockEntity.col') + 1
+                            }
+                        )
+                )
+                {
+                    this.store.dispatch('currentBlockEntity.rotate');
+                }
+
+                break;
+        }
+    }
+
+    public retriveMediatorMessage(
+        mediatorMessage: MediatorMessageInterface,
+        sender: MediatorColleagueInterface
+    ): void {
+        const responder = GameplayResponderFactory.createResponderFor(this, sender);
+        
+        if (responder) {
+            responder.resolveMessage(mediatorMessage);
+        }
     }
 
     public storeData({ get, dispatch }, { currentScene }): void {

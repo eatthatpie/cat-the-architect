@@ -31,7 +31,10 @@ export default class GridBlock implements GridBlockInterface {
         }
     }
 
-    public absorb(gridBlock: GridBlockInterface, coords?: GridCoordInterface): GridBlockInterface {
+    public absorb(
+        gridBlock: GridBlockInterface,
+        coords?: GridCoordInterface
+    ): GridBlockInterface {
         throw new Error("Method not implemented.");
     }
     
@@ -51,28 +54,31 @@ export default class GridBlock implements GridBlockInterface {
         throw new Error("Method not implemented.");
     }
 
+    public getHeight(): number {
+        return this.cells.length;
+    }
+
     public getNextRotationArray(): Array<any> {
         throw new Error("Method not implemented.");
+    }
+
+    public getWidth(): number {
+        return this.getHeight() > 0 ? this.cells[0].length : 0;
     }
 
     public isCollapsable(): Boolean {
         throw new Error("Method not implemented.");
     }
 
-    public isCollidingWith(gridBlock: GridBlockInterface, coords?: GridCoordInterface): Boolean {
+    public isCollidingWith(
+        gridBlock: GridBlockInterface,
+        coords?: GridCoordInterface
+    ): Boolean {
         throw new Error("Method not implemented.");
     }
 
     public rotate(): void {
         throw new Error("Method not implemented.");
-    }
-
-    public getHeight(): Number {
-        return this.cells.length;
-    }
-
-    public getWidth(): Number {
-        return this.getHeight() > 0 ? this.cells[0].length : 0;
     }
 
     public setCells(cells: Array<any>): void {
