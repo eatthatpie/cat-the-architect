@@ -9,16 +9,19 @@ export default class GridBlockDecorator implements GridBlockInterface {
         this.gridBlock = gridBlock;
     }
 
-    public absorb(gridBlock: GridBlockInterface, coords?: GridCoordInterface): GridBlockInterface {
-        throw new Error("Method not implemented.");
+    public absorb(
+        gridBlock: GridBlockInterface,
+        coords?: GridCoordInterface
+    ): GridBlockInterface {
+        return this.gridBlock.absorb(gridBlock, coords);
     }
     
     public addRotationStep(cells: Array <any>): void {
-        throw new Error("Method not implemented.");
+        this.gridBlock.addRotationStep(cells);
     }
 
     public collapse(): void {
-        throw new Error("Method not implemented.");
+        this.gridBlock.collapse();
     }
 
     public getCollisionPositionWith(
@@ -26,33 +29,36 @@ export default class GridBlockDecorator implements GridBlockInterface {
         direction: Direction,
         coords?: GridCoordInterface
     ): GridCoordInterface {
-        throw new Error("Method not implemented.");
+        return this.gridBlock.getCollisionPositionWith(gridBlock, direction, coords);
     }
 
-    public getNextRotationArray(): Array<any> {
-        throw new Error("Method not implemented.");
-    }
-
-    public isCollapsable(): Boolean {
-        throw new Error("Method not implemented.");
-    }
-
-    public isCollidingWith(gridBlock: GridBlockInterface, coords?: GridCoordInterface): Boolean {
-        throw new Error("Method not implemented.");
-    }
-
-    public rotate(): void {
-        throw new Error("Method not implemented.");
-    }
-
-    public getHeight(): Number {
+    public getHeight(): number {
         return this.gridBlock.toArray().length;
     }
 
-    public getWidth(): Number {
+    public getNextRotationArray(): Array<any> {
+        return this.gridBlock.getNextRotationArray();
+    }
+
+    public getWidth(): number {
         return this.getHeight() > 0
             ? this.gridBlock.toArray()[0].length
             : 0;
+    }
+
+    public isCollapsable(): Boolean {
+        return this.gridBlock.isCollapsable();
+    }
+
+    public isCollidingWith(
+        gridBlock: GridBlockInterface,
+        coords?: GridCoordInterface
+    ): Boolean {
+        return this.gridBlock.isCollidingWith(gridBlock, coords);
+    }
+
+    public rotate(): void {
+        this.gridBlock.rotate();
     }
 
     public setCells(cells: any[]): void {

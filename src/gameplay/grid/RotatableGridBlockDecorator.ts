@@ -17,7 +17,7 @@ export default class RotatableGridBlockDecorator extends GridBlockDecotator impl
         this.rotationSteps.push(cells);
     }
 
-    public getNextRotationArray(): Array < any > {
+    public getNextRotationArray(): Array <any> {
         let rotationIndex = this.rotationIndex + 1;
 
         if (rotationIndex > this.rotationSteps.length - 1) {
@@ -31,7 +31,15 @@ export default class RotatableGridBlockDecorator extends GridBlockDecotator impl
             return this.gridBlock.toArray();
         }
 
-        let out = JSON.parse(JSON.stringify(this.gridBlock.toArray()));
+        let out = [];
+    
+        for (let i = 0; i < this.getHeight(); i++) {
+            out[i] = [];
+
+            for (let j = 0; j < this.getWidth(); j++) {
+                out[i][j] = new GridCell();
+            }
+        }
 
         this.rotationSteps[rotationIndex].forEach(stepCell => {
             out[stepCell.row - 1][stepCell.col - 1] = new GridCell({
@@ -58,7 +66,15 @@ export default class RotatableGridBlockDecorator extends GridBlockDecotator impl
             return this.gridBlock.toArray();
         }
 
-        let out = JSON.parse(JSON.stringify(this.gridBlock.toArray()));
+        let out = [];
+    
+        for (let i = 0; i < this.getHeight(); i++) {
+            out[i] = [];
+
+            for (let j = 0; j < this.getWidth(); j++) {
+                out[i][j] = new GridCell();
+            }
+        }
 
         this.rotationSteps[this.rotationIndex].forEach(stepCell => {
             out[stepCell.row - 1][stepCell.col - 1] = new GridCell({

@@ -48,6 +48,21 @@ describe(`Absorbable grid block`, () => {
         ]);
     });
 
+    test(`non-taken cells are ignored during absorption`, () => {
+        const gridBlock = new AbsorbableGridBlockDecorator(new GridBlock({ cols: 3, rows: 3 }));
+        
+        const absorbedGridBlock = new GridBlock([
+            [new GridCell({ isTaken: true }), new GridCell()],
+            [new GridCell(), new GridCell()]
+        ]);
+
+        expect(gridBlock.absorb(absorbedGridBlock, { col: 3, row: 3 }).toArray()).toEqual([
+            [new GridCell(), new GridCell(), new GridCell()],
+            [new GridCell(), new GridCell(), new GridCell()],
+            [new GridCell(), new GridCell(), new GridCell({ isTaken: true })]
+        ]);
+    });
+
     test(`absorption cannot extend absorbable grid block's dimensions`, () => {
         const gridBlock = new AbsorbableGridBlockDecorator(new GridBlock({ cols: 3, rows: 3 }));
         

@@ -19,7 +19,10 @@ export default class CollidableGridBlockDecorator extends GridBlockDecotator imp
         coords?: GridCoordInterface
     ): GridCoordInterface {
         if (direction !== Direction.DOWN) {
-            throw new Error(`Method getCollisionPositionWith for given vector is not implemented yet.`);
+            throw new Error(
+                `Method getCollisionPositionWith for given vector
+                is not implemented yet.`
+            );
         }
 
         let col = coords ? coords.col : 1;
@@ -34,7 +37,10 @@ export default class CollidableGridBlockDecorator extends GridBlockDecotator imp
         return { col, row };
     }
 
-    public isCollidingWith(gridBlock: GridBlockInterface, coords?: GridCoordInterface): Boolean {
+    public isCollidingWith(
+        gridBlock: GridBlockInterface,
+        coords?: GridCoordInterface
+    ): Boolean {
         let gridBlockArray = gridBlock.toArray();
 
         if (coords) {
@@ -44,7 +50,10 @@ export default class CollidableGridBlockDecorator extends GridBlockDecotator imp
             const targetCols = sourceCols + (coords.col - 1);
             let result = [];
 
-            if (this.gridBlock.toArray().length < targetRows || this.gridBlock.toArray()[0].length < targetCols) {
+            if (
+                this.gridBlock.toArray().length < targetRows ||
+                this.gridBlock.toArray()[0].length < targetCols
+            ) {
                 return true;
             }
 
@@ -66,13 +75,28 @@ export default class CollidableGridBlockDecorator extends GridBlockDecotator imp
             gridBlockArray = result;
         }
 
-        const rowsCount = Math.max(this.gridBlock.toArray().length, gridBlockArray.length);
-        const colsCount = Math.max(this.gridBlock.toArray()[0].length, gridBlockArray[0].length);
+        const rowsCount = Math.max(
+            this.gridBlock.toArray().length,
+            gridBlockArray.length
+        );
+        const colsCount = Math.max(
+            this.gridBlock.toArray()[0].length,
+            gridBlockArray[0].length
+        );
 
         for (let i = 0; i < rowsCount; i++) {
             for (let j = 0; j < colsCount; j++) {
-                if (gridBlockArray[i] && gridBlockArray[i][j] && this.gridBlock.toArray()[i] && this.gridBlock.toArray()[i][j]) {
-                    if (gridBlockArray[i][j].getIsTaken && gridBlockArray[i][j].getIsTaken() && this.gridBlock.toArray()[i][j].getIsTaken()) {
+                if (
+                    gridBlockArray[i] &&
+                    gridBlockArray[i][j] &&
+                    this.gridBlock.toArray()[i] &&
+                    this.gridBlock.toArray()[i][j]
+                ) {
+                    if (
+                        gridBlockArray[i][j].getIsTaken &&
+                        gridBlockArray[i][j].getIsTaken() &&
+                        this.gridBlock.toArray()[i][j].getIsTaken()
+                    ) {
                         return true;
                     }
                 }
