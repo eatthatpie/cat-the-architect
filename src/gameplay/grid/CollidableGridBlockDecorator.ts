@@ -50,12 +50,12 @@ export default class CollidableGridBlockDecorator extends GridBlockDecotator imp
             const targetCols = sourceCols + (coords.col - 1);
             let result = [];
 
-            if (
-                this.gridBlock.toArray().length < targetRows ||
-                this.gridBlock.toArray()[0].length < targetCols
-            ) {
-                return true;
-            }
+            // if (
+            //     this.gridBlock.toArray().length < targetRows ||
+            //     this.gridBlock.toArray()[0].length < targetCols
+            // ) {
+            //     return true;
+            // }
 
             for (let i = 0; i < targetRows; i++) {
                 result[i] = [];
@@ -99,6 +99,14 @@ export default class CollidableGridBlockDecorator extends GridBlockDecotator imp
                     ) {
                         return true;
                     }
+                }
+                else if (
+                    gridBlockArray[i] &&
+                    gridBlockArray[i][j] &&
+                    gridBlockArray[i][j].getIsTaken &&
+                    gridBlockArray[i][j].getIsTaken()
+                ) {
+                    return true;
                 }
             }
         }
