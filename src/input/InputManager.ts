@@ -19,12 +19,13 @@ export default class InputManager extends MediatorColleagueBase implements Boota
         console.log('[DE: InputManager] Starting up...');
 
         window.addEventListener('click', this.handleMouseClick.bind(this));
+        window.addEventListener('keyup', this.handleKeyUp.bind(this));
         window.addEventListener('mousemove', this.handleMouseMove.bind(this));
 
         console.log('[DE: InputManager] Up & running!');
     }
 
-    private handleMouseClick(event: MouseEvent): void {
+    protected handleMouseClick(event: MouseEvent): void {
         this.mousePosition.x = event.clientX - 8;
         this.mousePosition.y = event.clientY - 8;
 
@@ -36,7 +37,17 @@ export default class InputManager extends MediatorColleagueBase implements Boota
         });
     }
 
-    private handleMouseMove(event: MouseEvent): void {
+    protected handleKeyUp(event: KeyboardEvent): void {
+        this.notifyMediator({
+            type: 'keyUp',
+            params: {
+                code: event.code,
+                key: event.key
+            }
+        });
+    }
+
+    protected handleMouseMove(event: MouseEvent): void {
         this.mousePosition.x = event.clientX - 8;
         this.mousePosition.y = event.clientY - 8;
 
