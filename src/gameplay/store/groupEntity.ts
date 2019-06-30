@@ -14,11 +14,23 @@ export default {
         grid({ getState }) {
             return getState().grid;
         },
+        isOverfilled({ getState }) {
+            
+        },
         state({ getState }) {
             return getState();
         }
     },
     dispatchers: {
+        reset({ setState }) {
+            setState({
+                grid: new CollidableGridBlockDecorator(
+                    new AbsorbableGridBlockDecorator(
+                        new GridBlock({ cols: 10, rows: 20 })
+                    )
+                )
+            });
+        },
         update({ setState }, { grid }) {
             setState({
                 grid

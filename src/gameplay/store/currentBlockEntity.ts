@@ -10,14 +10,25 @@ export default {
         positionY: 0
     },
     getters: {
+        col({ getState }) {
+            return getState().col;
+        },
         gridBlock({ getState }) {
             return getState().gridBlock;
+        },
+        row({ getState }) {
+            return getState().row;
         },
         state({ getState }) {
             return getState();
         }
     },
     dispatchers: {
+        moveHorizontal({ getState, setState }, { direction }) {
+            const col = getState().col += direction;
+
+            setState({ col });
+        },
         reset({ setState }) {
             const rotatableGridBlockContract = (new RotatableGridBlockGenerator()).generate();
 
@@ -34,6 +45,13 @@ export default {
                 row: 1,
                 col: gridBlock.getWidth() <= 2 ? 5 : 4
             });
+        },
+        rotate({ getState, setState }) {
+            const gridBlock = getState().gridBlock;
+
+            gridBlock.rotate();
+
+            setState({ gridBlock });
         },
         updatePosition({ getState, setState }) {
             const updatedPositionY = getState().positionY + 20;
