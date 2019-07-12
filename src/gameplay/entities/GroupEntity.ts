@@ -5,6 +5,7 @@ import Vector from "@/common/math/Vector";
 import RenderingContextInterface from "@/interfaces/RenderingContextInterface";
 import GridBlockInterface from "../interfaces/GridBlockInterface";
 import GridBlock from "../grid/GridBlock";
+import Color from "@/common/Color";
 
 export default class GroupEntity extends SpriteEntity implements StoreSubscriberInterface {
     private grid: GridBlockInterface;
@@ -24,6 +25,14 @@ export default class GroupEntity extends SpriteEntity implements StoreSubscriber
     }
 
     public onDraw(context: RenderingContextInterface, elapsedTime: number): void {
+        context.drawRect(
+            new Rect(
+                new Vector(80, 80),
+                new Vector(280, 480)
+            ),
+            Color.hex('#fff')
+        );
+
         const gridArray = this.grid.toArray();
 
         for (let i = 0; i < gridArray.length; i++) {

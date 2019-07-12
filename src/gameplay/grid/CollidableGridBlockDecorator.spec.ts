@@ -58,8 +58,8 @@ describe(`Collidable grid block`, () => {
 
         expect(gridBlock.isCollidingWith(collidingGridBlock2, { col: 1, row: 1 })).toBeTruthy();
         expect(gridBlock.isCollidingWith(collidingGridBlock2, { col: 0, row: 1 })).toBeTruthy();
-        expect(gridBlock.isCollidingWith(collidingGridBlock2, { col: -1, row: 1 })).toBeFalsy();
-        expect(gridBlock.isCollidingWith(collidingGridBlock2, { col: -2, row: 1 })).toBeTruthy();
+        expect(gridBlock.isCollidingWith(collidingGridBlock2, { col: 0, row: 2 })).toBeFalsy();
+        expect(gridBlock.isCollidingWith(collidingGridBlock2, { col: -1, row: 1 })).toBeTruthy();
         expect(gridBlock.isCollidingWith(collidingGridBlock2, { col: 0, row: 2 })).toBeFalsy();
     });
 

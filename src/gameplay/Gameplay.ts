@@ -45,7 +45,7 @@ export default class Gameplay extends GameBase implements StoreSubscriberInterfa
 
         this.store
             .subscribe('currentBlockEntity.state')
-            .to(currentBlockEntity, data => { 
+            .to(currentBlockEntity, data => {
                 return {
                     state: data
                 }; 

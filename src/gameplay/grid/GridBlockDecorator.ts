@@ -1,11 +1,13 @@
 import GridBlockInterface from "../interfaces/GridBlockInterface";
 import GridCoordInterface from "../interfaces/GridCoordInterface";
 import { Direction } from "@/common/Types";
+import CloneableInterface from "@/interfaces/CloneableInterface";
+import GridBlock from "./GridBlock";
 
-export default class GridBlockDecorator implements GridBlockInterface {
-    protected gridBlock: GridBlockInterface;
+export default class GridBlockDecorator implements GridBlockInterface, CloneableInterface {
+    protected gridBlock: GridBlockInterface & CloneableInterface;
 
-    public constructor(gridBlock: GridBlockInterface) {
+    public constructor(gridBlock: GridBlockInterface & CloneableInterface) {
         this.gridBlock = gridBlock;
     }
 
@@ -18,6 +20,10 @@ export default class GridBlockDecorator implements GridBlockInterface {
     
     public addRotationStep(cells: Array <any>): void {
         this.gridBlock.addRotationStep(cells);
+    }
+
+    public clone(): GridBlockInterface & CloneableInterface {
+        return this.gridBlock.clone();
     }
 
     public collapse(): void {

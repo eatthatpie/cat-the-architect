@@ -3,8 +3,10 @@ import GridCell from '@/gameplay/grid/GridCell';
 import GridDimensionsInterface from '@/gameplay/interfaces/GridDimensionsInterface';
 import GridCoordInterface from '../interfaces/GridCoordInterface';
 import { Direction } from '@/common/Types';
+import CloneableInterface from '@/interfaces/CloneableInterface';
+import ArrayHelper from '@/common/helpers/ArrayHelper';
 
-export default class GridBlock implements GridBlockInterface {
+export default class GridBlock implements GridBlockInterface, CloneableInterface {
     protected cells: Array<any>;
 
     public constructor(cells?: GridDimensionsInterface | Array<any>) {
@@ -40,6 +42,38 @@ export default class GridBlock implements GridBlockInterface {
     
     public addRotationStep(cells: Array <any>): void {
         throw new Error("Method not implemented.");
+    }
+
+    public clone(): GridBlock {
+        let outArray = [];
+
+        ArrayHelper.forEachInMatrix(this.toArray(), ({ i, j, item }) => {
+            if (!outArray[i]) {
+                outArray[i] = [];
+            }
+
+            if (item) {
+                outArray[i][j] = item.clone();
+            } else {
+                outArray[i][j] = new GridCell({ isTaken: false });
+            }
+        });
+
+        return new GridBlock(outArray);
+    }
+
+    public cloneEmpty(): GridBlock {
+        let outArray = [];
+
+        ArrayHelper.forEachInMatrix(this.toArray(), ({ i, j, item }) => {
+            if (!outArray[i]) {
+                outArray[i] = [];
+            }
+
+            outArray[i][j] = new GridCell({ isTaken: false });
+        });
+
+        return new GridBlock(outArray);
     }
 
     public collapse(): void {

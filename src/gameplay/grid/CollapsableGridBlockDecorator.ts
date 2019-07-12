@@ -1,9 +1,10 @@
 import GridBlockDecotator from './GridBlockDecorator';
 import GridBlockInterface from "../interfaces/GridBlockInterface";
 import GridCell from "./GridCell";
+import CloneableInterface from '@/interfaces/CloneableInterface';
 
-export default class CollapsableGridBlockDecorator extends GridBlockDecotator implements GridBlockInterface {
-    public constructor(gridBlock: GridBlockInterface) {
+export default class CollapsableGridBlockDecorator extends GridBlockDecotator {
+    public constructor(gridBlock: GridBlockInterface & CloneableInterface) {
         super(gridBlock);
     }
 

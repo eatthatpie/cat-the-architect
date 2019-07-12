@@ -1,11 +1,13 @@
 import GridBlock from './GridBlock';
 import GridBlockDecotator from './GridBlockDecorator';
 import GridBlockInterface from '@/gameplay/interfaces/GridBlockInterface';
+import GridBlockMatcher from '@/gameplay/grid/GridBlockMatcher';
 import GridCoordInterface from '@/gameplay/interfaces/GridCoordInterface';
 import { Direction } from '@/common/Types';
+import CloneableInterface from '@/interfaces/CloneableInterface';
 
-export default class CollidableGridBlockDecorator extends GridBlockDecotator implements GridBlockInterface {
-    public constructor(gridBlock: GridBlockInterface) {
+export default class CollidableGridBlockDecorator extends GridBlockDecotator {
+    public constructor(gridBlock: GridBlockInterface & CloneableInterface) {
         super(gridBlock);
     }
 
@@ -41,76 +43,14 @@ export default class CollidableGridBlockDecorator extends GridBlockDecotator imp
         gridBlock: GridBlockInterface,
         coords?: GridCoordInterface
     ): Boolean {
-        let gridBlockArray = gridBlock.toArray();
+        const gmb = new GridBlockMatcher();
 
-        if (coords) {
-            const sourceRows = gridBlockArray.length;
-            const sourceCols = gridBlockArray[0].length;
-            const targetRows = sourceRows + (coords.row - 1);
-            const targetCols = sourceCols + (coords.col - 1);
-            let result = [];
+        gmb.match(<GridBlock> this.gridBlock, gridBlock, coords);
 
-            // if (
-            //     this.gridBlock.toArray().length < targetRows ||
-            //     this.gridBlock.toArray()[0].length < targetCols
-            // ) {
-            //     return true;
-            // }
-
-            for (let i = 0; i < targetRows; i++) {
-                result[i] = [];
-
-                for (let j = 0; j < targetCols; j++) {
-                    const sourceRow = i - coords.row + 1;
-                    const sourceCol = j - coords.col + 1;
-
-                    if (sourceRow < 0 || sourceCol < 0) {
-                        continue;
-                    }
-
-                    result[i][j] = gridBlockArray[sourceRow][sourceCol] || new GridBlock();
-                }
-            }
-
-            gridBlockArray = result;
+        if (gmb.isSumExpanding()) {
+            return true;
+        } else {
+            return gmb.getIntersection() !== null;
         }
-
-        const rowsCount = Math.max(
-            this.gridBlock.toArray().length,
-            gridBlockArray.length
-        );
-        const colsCount = Math.max(
-            this.gridBlock.toArray()[0].length,
-            gridBlockArray[0].length
-        );
-
-        for (let i = 0; i < rowsCount; i++) {
-            for (let j = 0; j < colsCount; j++) {
-                if (
-                    gridBlockArray[i] &&
-                    gridBlockArray[i][j] &&
-                    this.gridBlock.toArray()[i] &&
-                    this.gridBlock.toArray()[i][j]
-                ) {
-                    if (
-                        gridBlockArray[i][j].getIsTaken &&
-                        gridBlockArray[i][j].getIsTaken() &&
-                        this.gridBlock.toArray()[i][j].getIsTaken()
-                    ) {
-                        return true;
-                    }
-                }
-                else if (
-                    gridBlockArray[i] &&
-                    gridBlockArray[i][j] &&
-                    gridBlockArray[i][j].getIsTaken &&
-                    gridBlockArray[i][j].getIsTaken()
-                ) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }
