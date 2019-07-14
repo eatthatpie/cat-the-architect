@@ -26,6 +26,10 @@ export default class GridBlockDecorator implements GridBlockInterface, Cloneable
         return this.gridBlock.clone();
     }
 
+    public cloneEmpty(): GridBlockInterface & CloneableInterface {
+        return this.gridBlock.cloneEmpty();
+    }
+
     public collapse(): void {
         this.gridBlock.collapse();
     }

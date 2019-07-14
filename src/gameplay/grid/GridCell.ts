@@ -16,6 +16,10 @@ export default class GridCell implements CloneableInterface {
         });
     }
 
+    public cloneEmpty(): GridCell {
+        return new GridCell();
+    }
+
     public getIsTaken(): Boolean {
         return this.isTaken;
     }

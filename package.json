@@ -6,13 +6,13 @@
         "test": "jest"
     },
     "devDependencies": {
-        "@types/jest": "^24.0.13",
+        "@types/jest": "^24.0.15",
         "jest": "^24.8.0",
         "ts-jest": "^24.0.2",
         "ts-loader": "^5.3.3",
-        "typescript": "^3.2.4",
-        "webpack": "^4.29.0",
-        "webpack-cli": "^3.2.1",
-        "webpack-dev-server": "^3.1.14"
+        "typescript": "^3.5.3",
+        "webpack": "^4.35.3",
+        "webpack-cli": "^3.3.6",
+        "webpack-dev-server": "^3.7.2"
     }
 }
