@@ -1,3 +1,4 @@
+import BlockTypes from '../resources/BlockTypes';
 import RotatableGridBlockContract from "../interfaces/RotatableGridBlockContract";
 
 export default class RotatableGridBlockGenerator {
@@ -167,11 +168,20 @@ export default class RotatableGridBlockGenerator {
 
     public generate(): RotatableGridBlockContract {
         let randomIndex = Math.floor(Math.random() * this.blocksCollection.length);
+        let randomType = Math.floor(Math.random() * BlockTypes.length);
 
         randomIndex = randomIndex >= this.blocksCollection.length
             ? randomIndex - 1
             : randomIndex;
 
-        return this.blocksCollection[randomIndex];
+        let out = this.blocksCollection[randomIndex];
+
+        const type = BlockTypes[randomType];
+
+        out.rotationSteps = out.rotationSteps.map(item => {
+            return item.map(subitem => Object.assign(subitem, { type }))
+        });
+
+        return out;
     }
 }

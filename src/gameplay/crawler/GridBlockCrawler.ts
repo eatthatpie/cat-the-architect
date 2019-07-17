@@ -18,6 +18,36 @@ export default class GridBlockCrawler {
         );
     }
 
+    public crawl(coords: GridCoordInterface, cellsData?: Array<any>): Array<GridCoordInterface> {
+        if (
+            this.ignoredCellsNormalized.indexOf(
+                ((coords.row - 1) * this.gridBlock.clone().toArray().length) + coords.col
+            ) >= 0
+        ) {
+            return [];
+        }
+
+        const next = cellsData
+            ? this.neighs(coords, cellsData)
+            : this.neighs(coords);
+
+        this.addIgnoredCell(coords);
+
+        if (next && next.length > 0) {
+            const self = this;
+
+            return [].concat(
+                [coords],
+                next[0] ? self.crawl(next[0], cellsData) : [],
+                next[1] ? self.crawl(next[1], cellsData) : [],
+                next[2] ? self.crawl(next[2], cellsData) : [],
+                next[3] ? self.crawl(next[3], cellsData) : [],
+            )
+        }
+
+        return [];
+    }
+
     public getNextCell(): GridCoordInterface {
         let out = null;
 
@@ -36,7 +66,22 @@ export default class GridBlockCrawler {
         return out;
     }
 
-    public neighs(coords: GridCoordInterface): Array<GridCoordInterface> {
+    public findCellsPaths(): Array<Array<GridCoordInterface>> {
+        let nextCoords: GridCoordInterface;
+        let out = [];
+
+        while ((nextCoords = this.getNextCell()) !== null) {
+            const cellsPath = this.crawl(nextCoords);
+
+            if (cellsPath && cellsPath.length > 0) {
+                out.push(cellsPath);
+            }
+        }
+
+        return out;
+    }
+
+    public neighs(coords: GridCoordInterface, cellsData?: Array<any>): Array<GridCoordInterface> {
         let out = [];
 
         const gridBlockArray = this.gridBlock.clone().toArray();
@@ -63,9 +108,20 @@ export default class GridBlockCrawler {
 
             if (neighBlock && neighBlock.getIsTaken() && neighBlock.getType() == baseBlock.getType()) {
                 out.push(coords);
+
+                if (cellsData && Array.isArray(cellsData)) {
+                    cellsData.push({
+                        coords,
+                        block: neighBlock
+                    });
+                }
             }
-        })
+        });
 
         return out;
+    }
+
+    public resetIgnoredCells(): void {
+        this.ignoredCellsNormalized = [];
     }
 };

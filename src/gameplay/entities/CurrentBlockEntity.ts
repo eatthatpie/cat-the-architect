@@ -33,12 +33,13 @@ export default class CurrentBlockEntity extends SpriteEntity /** BlockEntity */ 
                 if (gridArray[i][j].getIsTaken()) {
                     const relativeRowIndex = i + this.row - 1;
                     const relativeColIndex = j + this.col - 1;
+                    const typeIndex = (gridArray[i][j].getType() - 1) * 20
 
                     context.drawImage(
                         this.imageSource,
                         new Rect(
-                            new Vector(0, 0),
-                            new Vector(20, 20)
+                            new Vector(0, 0 + typeIndex),
+                            new Vector(20, 20 + typeIndex)
                         ),
                         new Rect(
                             new Vector(
@@ -56,9 +57,7 @@ export default class CurrentBlockEntity extends SpriteEntity /** BlockEntity */ 
         }
     }
 
-    public reset(): void {
-
-    }
+    public reset(): void {}
 
     public updatePosition(positionY: number): void {
         this.position.y = positionY;
@@ -83,9 +82,8 @@ export default class CurrentBlockEntity extends SpriteEntity /** BlockEntity */ 
     }
 
     public storeDataChange({ get, dispatch }, { state }): void {
-        if (state.col) {
-            this.col = state.col;
-        }
+        this.col = state.col;
+        this.row = state.row;
 
         if (state.gridBlock) {
             this.gridBlock = state.gridBlock;
@@ -93,10 +91,6 @@ export default class CurrentBlockEntity extends SpriteEntity /** BlockEntity */ 
 
         if (state.positionY) {
             this.updatePosition(state.positionY);
-        }
-        
-        if (state.row) {
-            this.row = state.row;
         }
     }
 

@@ -14,11 +14,11 @@ export default class RotatableGridBlockDecorator extends GridBlockDecotator {
         this.rotationSteps = [];
     }
 
-    public addRotationStep(cells: Array <any>): void {
+    public addRotationStep(cells: Array<any>): void {
         this.rotationSteps.push(cells);
     }
 
-    public getNextRotationArray(): Array <any> {
+    public getNextRotationArray(): Array<any> {
         let rotationIndex = this.rotationIndex + 1;
 
         if (rotationIndex > this.rotationSteps.length - 1) {
@@ -79,7 +79,8 @@ export default class RotatableGridBlockDecorator extends GridBlockDecotator {
 
         this.rotationSteps[this.rotationIndex].forEach(stepCell => {
             out[stepCell.row - 1][stepCell.col - 1] = new GridCell({
-                isTaken: true
+                isTaken: true,
+                type: stepCell.type || 0
             });
         });
 
