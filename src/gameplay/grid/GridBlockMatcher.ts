@@ -63,9 +63,11 @@ export default class GridBlockMatcher {
                     }
 
                     self._intersectionArray[i][j].setIsTaken(true);
+                    self._intersectionArray[i][j].setType(cell.item.getType());
                 }
 
-                self._sumArray[i][j].setIsTaken(true)
+                self._sumArray[i][j].setIsTaken(true);
+                self._sumArray[i][j].setType(cell.item.getType());;
             }
         });
     }

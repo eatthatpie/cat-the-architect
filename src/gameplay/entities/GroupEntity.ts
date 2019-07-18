@@ -38,11 +38,13 @@ export default class GroupEntity extends SpriteEntity implements StoreSubscriber
         for (let i = 0; i < gridArray.length; i++) {
             for (let j = 0; j < gridArray[i].length; j++) {
                 if (gridArray[i][j].getIsTaken()) {
+                    const typeIndex = (gridArray[i][j].getType() - 1) * 20
+
                     context.drawImage(
                         this.imageSource,
                         new Rect(
-                            new Vector(0, 0),
-                            new Vector(20, 20)
+                            new Vector(0, 0 + typeIndex),
+                            new Vector(20, 20 + typeIndex)
                         ),
                         new Rect(
                             new Vector(
