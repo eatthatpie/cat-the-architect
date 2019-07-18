@@ -7,11 +7,15 @@ export default {
         gridBlock: null,
         col: 1,
         row: 1,
-        positionY: 0
+        positionY: 0,
+        nextBlock: null
     },
     getters: {
         col({ getState }) {
             return getState().col;
+        },
+        nextBlock({ getState }) {
+            return getState().nextBlock;
         },
         gridBlock({ getState }) {
             return getState().gridBlock;
@@ -29,21 +33,39 @@ export default {
 
             setState({ col });
         },
-        reset({ setState }) {
-            const rotatableGridBlockContract = (new RotatableGridBlockGenerator()).generate();
+        reset({ getState, setState }) {
+            const state = getState();
 
-            const gridBlock = new RotatableGridBlockDecorator(
-                new GridBlock({ rows: rotatableGridBlockContract.rows, cols: rotatableGridBlockContract.cols })
+            let gridBlock = null;
+
+            if (!!state.nextBlock) {
+                gridBlock = state.nextBlock;
+            }
+            else {
+                const rotatableGridBlockContract1 = (new RotatableGridBlockGenerator()).generate();
+                gridBlock = new RotatableGridBlockDecorator(
+                    new GridBlock({ rows: rotatableGridBlockContract1.rows, cols: rotatableGridBlockContract1.cols })
+                );
+
+                rotatableGridBlockContract1.rotationSteps.forEach(step => {
+                    gridBlock.addRotationStep(step);
+                });
+            }
+
+            const rotatableGridBlockContract2 = (new RotatableGridBlockGenerator()).generate();
+            const nextGridBlock = new RotatableGridBlockDecorator(
+                new GridBlock({ rows: rotatableGridBlockContract2.rows, cols: rotatableGridBlockContract2.cols })
             );
 
-            rotatableGridBlockContract.rotationSteps.forEach(step => {
-                gridBlock.addRotationStep(step);
+            rotatableGridBlockContract2.rotationSteps.forEach(step => {
+                nextGridBlock.addRotationStep(step);
             });
             
             setState({
                 gridBlock,
                 row: 1,
-                col: gridBlock.getWidth() <= 2 ? 5 : 4
+                col: gridBlock.getWidth() <= 2 ? 5 : 4,
+                nextBlock: nextGridBlock
             });
         },
         rotate({ getState, setState }) {

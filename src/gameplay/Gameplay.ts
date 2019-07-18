@@ -1,4 +1,5 @@
 import CurrentBlockEntity from '@/gameplay/entities/CurrentBlockEntity';
+import NextBlockEntity from '@/gameplay/entities/NextBlockEntity';
 import GameBase from '@/game/GameBase';
 import GroupEntity from '@/gameplay/entities/GroupEntity';
 import LauncherConfigInterface from '@/interfaces/LauncherConfigInterface';
@@ -31,9 +32,11 @@ export default class Gameplay extends GameBase implements StoreSubscriberInterfa
         
         const groupEntity = new GroupEntity();
         const currentBlockEntity = new CurrentBlockEntity();
+        const nextBlockEntity = new NextBlockEntity();
 
         this.scenes.game.addEntity(groupEntity);
         this.scenes.game.addEntity(currentBlockEntity);
+        this.scenes.game.addEntity(nextBlockEntity);
 
         this.store
             .subscribe('scene.current')
@@ -48,6 +51,14 @@ export default class Gameplay extends GameBase implements StoreSubscriberInterfa
             .to(currentBlockEntity, data => {
                 return {
                     state: data
+                }; 
+            });
+
+        this.store
+            .subscribe('currentBlockEntity.nextBlock')
+            .to(nextBlockEntity, data => {
+                return {
+                    nextBlock: data
                 }; 
             });
         
