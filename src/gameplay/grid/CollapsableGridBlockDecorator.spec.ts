@@ -7,79 +7,43 @@ describe(`Collapsable grid block`, () => {
         expect(1).toBeTruthy();
     });
 
-    test(`cells with the same type in the same row indicates that the block is collapsable`, () => {
-        const gridBlock1 = new CollapsableGridBlockDecorator(new GridBlock(
-            [
-                [
-                    new GridCell(),
-                    new GridCell(),
-                    new GridCell()
-                ],
-                [
-                    new GridCell({ isTaken: true, type: 2 }),
-                    new GridCell({ isTaken: true, type: 1 }),
-                    new GridCell({ isTaken: true, type: 1 })
-                ],
-                [
-                    new GridCell(),
-                    new GridCell(),
-                    new GridCell()
-                ]
-            ]
-        ));
-
-        expect(gridBlock1.isCollapsable()).toBeFalsy();
-
-        const gridBlock2 = new CollapsableGridBlockDecorator(
-            new GridBlock([
-                [
-                    new GridCell(),
-                    new GridCell(),
-                    new GridCell()
-                ],
-                [
-                    new GridCell({ isTaken: true, type: 1 }),
-                    new GridCell({ isTaken: true, type: 1 }),
-                    new GridCell({ isTaken: true, type: 1 })
-                ],
-                [
-                    new GridCell(),
-                    new GridCell(),
-                    new GridCell()
-                ]
-            ]
-        ));
-
-        expect(gridBlock2.isCollapsable()).toBeTruthy();
-    });
-
-    test(`cells with the same type in collapsable block can be removed and cause other taken cells to collapse`, () => {
+    test(`taken cells above empty cells can go down with gravity (collapse)`, () => {
         const gridBlock = new CollapsableGridBlockDecorator(new GridBlock(
             [
-                [
-                    new GridCell({ isTaken: true, type: 2 }),
-                    new GridCell(),
-                    new GridCell()
-                ],
-                [
-                    new GridCell({ isTaken: true, type: 1 }),
-                    new GridCell({ isTaken: true, type: 1 }),
-                    new GridCell({ isTaken: true, type: 1 })
-                ],
-                [
-                    new GridCell(),
-                    new GridCell(),
-                    new GridCell()
-                ]
+                [new GridCell({ isTaken: true }), new GridCell(), new GridCell()],
+                [new GridCell(), new GridCell({ isTaken: true }), new GridCell()],
+                [new GridCell({ isTaken: true }), new GridCell(), new GridCell({ isTaken: true })]
             ]
         ));
 
         gridBlock.collapse();
 
-        expect(gridBlock.toArray()).toEqual([
-            [new GridCell(), new GridCell(), new GridCell()],
-            [new GridCell(), new GridCell(), new GridCell()],
-            [new GridCell({ isTaken: true, type: 2 }), new GridCell(), new GridCell()]
-        ]);
+        expect(gridBlock.toArray()).toEqual(
+            [
+                [new GridCell(), new GridCell(), new GridCell()],
+                [new GridCell({ isTaken: true }), new GridCell(), new GridCell()],
+                [new GridCell({ isTaken: true }), new GridCell({ isTaken: true }), new GridCell({ isTaken: true })]
+            ]
+        );
+    });
+
+    test(`taken cells with the same type can be removed`, () => {
+        const gridBlock = new CollapsableGridBlockDecorator(new GridBlock(
+            [
+                [new GridCell(), new GridCell(), new GridCell()],
+                [new GridCell({ isTaken: true, type: 2 }), new GridCell(), new GridCell()],
+                [new GridCell({ isTaken: true, type: 2 }), new GridCell({ isTaken: true, type: 2 }), new GridCell({ isTaken: true, type: 1 })]
+            ]
+        ));
+
+        gridBlock.removeCellsPaths();
+
+        expect(gridBlock.toArray()).toEqual(
+            [
+                [new GridCell(), new GridCell(), new GridCell()],
+                [new GridCell(), new GridCell(), new GridCell()],
+                [new GridCell(), new GridCell(), new GridCell({ isTaken: true, type: 1 })]
+            ]
+        );
     });
 });

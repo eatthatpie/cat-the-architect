@@ -1,38 +1,17 @@
 import GridBlockDecotator from './GridBlockDecorator';
 import GridBlockInterface from "../interfaces/GridBlockInterface";
+import GridBlockCrawler from '@/gameplay/crawler/GridBlockCrawler';
 import GridCell from "./GridCell";
 import CloneableInterface from '@/interfaces/CloneableInterface';
+import GridCoordInterface from '../interfaces/GridCoordInterface';
 
 export default class CollapsableGridBlockDecorator extends GridBlockDecotator {
     public constructor(gridBlock: GridBlockInterface & CloneableInterface) {
         super(gridBlock);
     }
 
-    // @TODO: this fella needs huge refactoring
     public collapse(): void {
         let gridBlockArray = this.gridBlock.toArray();
-
-        gridBlockArray = gridBlockArray.map(row => {
-            if (row.length === 0) {
-                return row;
-            }
-
-            const type = row[0].getType();
-
-            if (!type) {
-                return row;
-            }
-
-            if (
-                row
-                    .filter(cell => cell.getType() === type)
-                    .length === row.length
-            ) {
-                return row.map(cell => new GridCell({ isTaken: false }));
-            }
-
-            return row;
-        });
 
         for (let k = 0; k < gridBlockArray.length; k++) {
             for (let i = gridBlockArray.length - 1; i >= 0; i--) {
@@ -54,28 +33,24 @@ export default class CollapsableGridBlockDecorator extends GridBlockDecotator {
         this.gridBlock.setCells(gridBlockArray);
     }
 
-    public isCollapsable(): Boolean {
-        return (
-            this.gridBlock
-            .toArray()
-            .filter(row => {
-                if (row.length === 0) {
-                    return false;
-                }
+    public removeCellsPaths(): Array<Array<GridCoordInterface>> {
+        const gbc = new GridBlockCrawler(this.gridBlock);
 
-                const type = row[0].getType();
+        const paths = gbc.findCellsPaths();
 
-                if (!type) {
-                    return false;
-                }
+        let gridBlockArray = this.gridBlock.clone().toArray();
 
-                return (
-                    row
-                        .filter(cell => cell.getType() === type)
-                        .length === row.length
-                );
+        paths.forEach(path => {
+            path.forEach(cell => {
+                gridBlockArray[cell.row - 1][cell.col - 1] = new GridCell();
+
+                // check if triggered
             })
-            .length > 0
-        );
+        });
+
+        // if triggered
+        this.gridBlock.setCells(gridBlockArray);
+
+        return paths;
     }
 };
